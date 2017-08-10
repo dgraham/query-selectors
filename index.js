@@ -26,3 +26,12 @@ export function querySelectorAll<T: Element>(
   }
   return found;
 }
+
+export function closest<T: Element>(
+  element: Element,
+  selectors: string,
+  klass: Class<Element> = HTMLElement
+): Option<T> {
+  const ancestor = element.closest(selectors);
+  return ancestor instanceof klass ? Some(ancestor) : None;
+}

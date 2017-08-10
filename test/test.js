@@ -3,11 +3,13 @@
 import assert from 'assert';
 import jsdom from 'jsdom-global';
 import {after, before, describe, it} from 'mocha';
-import {querySelector, querySelectorAll} from '../index';
+import {closest, querySelector, querySelectorAll} from '../index';
+import {polyfill} from './closest';
 
 describe('typed selector queries', function() {
   before(function() {
     this.cleanup = jsdom();
+    polyfill();
 
     if (!document.body) return;
     document.body.innerHTML = `
@@ -76,6 +78,26 @@ describe('typed selector queries', function() {
       assert.equal(found.length, 2);
       assert.equal(found[0].textContent, 'one');
       assert.equal(found[1].textContent, 'two');
+    });
+  });
+
+  describe('closest', function() {
+    it('finds parent by selector', function() {
+      const child = querySelector(document, '.child');
+      const parent = closest(child.unwrap(), '.parent');
+      assert(parent.isSome());
+    });
+
+    it('returns none for no selector matches', function() {
+      const child = querySelector(document, '.child');
+      const parent = closest(child.unwrap(), '.missing');
+      assert(parent.isNone());
+    });
+
+    it('returns none for selector match but type mismatch', function() {
+      const child = querySelector(document, '.child');
+      const parent = closest(child.unwrap(), '.parent', HTMLImageElement);
+      assert(parent.isNone());
     });
   });
 });
