@@ -47,7 +47,7 @@ export function closest<T: Element>(
 }
 
 export function addClass<T: Element>(...names: Array<string>): T => Option<T> {
-  return (el: T) => {
+  return function add(el: T): Option<T> {
     el.classList.add(...names);
     return Some(el);
   };
@@ -56,7 +56,7 @@ export function addClass<T: Element>(...names: Array<string>): T => Option<T> {
 export function removeClass<T: Element>(
   ...names: Array<string>
 ): T => Option<T> {
-  return (el: T) => {
+  return function remove(el: T): Option<T> {
     el.classList.remove(...names);
     return Some(el);
   };
@@ -66,7 +66,7 @@ export function toggleClass<T: Element>(
   name: string,
   force?: boolean
 ): T => Option<T> {
-  return (el: T) => {
+  return function toggle(el: T): Option<T> {
     el.classList.toggle(name, force);
     return Some(el);
   };
