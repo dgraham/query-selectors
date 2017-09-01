@@ -3,7 +3,7 @@
 import assert from 'assert';
 import jsdom from 'jsdom-global';
 import {after, before, describe, it} from 'mocha';
-import {closest, querySelector, querySelectorAll} from '../index';
+import {closest, query, querySelector, querySelectorAll} from '../index';
 import {polyfill} from './closest';
 
 describe('typed selector queries', function() {
@@ -24,6 +24,21 @@ describe('typed selector queries', function() {
 
   after(function() {
     this.cleanup();
+  });
+
+  describe('query', function() {
+    it('throws for failed selector match', function() {
+      assert.throws(() => query(document, '.missing'));
+    });
+
+    it('throws for failed subclass filter', function() {
+      assert.throws(() => query(document, '.text', HTMLButtonElement));
+    });
+
+    it('returns an element for matching subclass filter', function() {
+      const el = query(document, '.text', HTMLParagraphElement);
+      assert.equal(el.textContent, 'one');
+    });
   });
 
   describe('querySelector', function() {

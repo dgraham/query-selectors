@@ -4,6 +4,16 @@ import {type Option, None, Some} from 'option-type';
 
 type Queryable = Document | DocumentFragment | Element;
 
+export function query<T: Element>(
+  context: Queryable,
+  selectors: string,
+  klass: Class<Element> = HTMLElement
+): T {
+  return querySelector(context, selectors, klass).expect(
+    `Element not found: <${klass.name}> ${selectors}`
+  );
+}
+
 export function querySelector<T: Element>(
   context: Queryable,
   selectors: string,
