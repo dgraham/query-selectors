@@ -12,7 +12,9 @@ import {
   removeClass,
   toggleClass,
   nextSibling,
-  previousSibling
+  previousSibling,
+  getAttribute,
+  setAttribute
 } from '../index';
 import {polyfill} from './closest';
 
@@ -234,6 +236,33 @@ describe('typed selector queries', function() {
         nextSibling('.text', HTMLFormElement)
       );
       assert(el.isNone());
+    });
+  });
+
+  describe('getAttribute', function() {
+    it('returns none for missing attribute', function() {
+      const value = querySelector(document, '.child').andThen(
+        getAttribute('missing')
+      );
+      assert(value.isNone());
+    });
+
+    it('returns some for attribute', function() {
+      const value = querySelector(document, '.child').andThen(
+        getAttribute('class')
+      );
+      assert(value.isSome());
+      assert.equal(value.unwrap(), 'child');
+    });
+  });
+
+  describe('setAttribute', function() {
+    it('sets an attribute value', function() {
+      const value = querySelector(document, '.child')
+        .andThen(setAttribute('alt', 'hello'))
+        .andThen(getAttribute('alt'));
+      assert(value.isSome());
+      assert.equal(value.unwrap(), 'hello');
     });
   });
 });

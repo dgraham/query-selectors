@@ -107,3 +107,20 @@ export function nextSibling<T: Element>(
     return nextElement(sibling, selectors, klass);
   };
 }
+
+export function getAttribute(name: string): Element => Option<string> {
+  return function get(el: Element): Option<string> {
+    const value = el.getAttribute(name);
+    return value == null ? None : Some(value);
+  };
+}
+
+export function setAttribute<T: Element>(
+  name: string,
+  value: string
+): T => Option<T> {
+  return function set(el: T): Option<T> {
+    el.setAttribute(name, value);
+    return Some(el);
+  };
+}
