@@ -10,7 +10,9 @@ import {
   querySelectorAll,
   addClass,
   removeClass,
-  toggleClass
+  toggleClass,
+  nextSibling,
+  previousSibling
 } from '../index';
 import {polyfill} from './closest';
 
@@ -170,6 +172,68 @@ describe('typed selector queries', function() {
         .andThen(toggleClass('a', false));
       assert(el.isSome());
       assert(!el.unwrap().classList.contains('a'));
+    });
+  });
+
+  describe('previousSibling', function() {
+    it('returns some for default type match', function() {
+      const el = querySelector(document, 'span.text').andThen(
+        previousSibling('.text')
+      );
+      assert(el.isSome());
+      assert.equal(el.unwrap().tagName, 'P');
+    });
+
+    it('returns some for type match', function() {
+      const el = querySelector(document, 'span.text').andThen(
+        previousSibling('.text', HTMLParagraphElement)
+      );
+      assert(el.isSome());
+      assert.equal(el.unwrap().tagName, 'P');
+    });
+
+    it('returns none for no selector matches', function() {
+      const el = querySelector(document, 'span.text').andThen(
+        previousSibling('.missing')
+      );
+      assert(el.isNone());
+    });
+
+    it('returns none for selector match but type mismatch', function() {
+      const el = querySelector(document, 'span.text').andThen(
+        previousSibling('.text', HTMLFormElement)
+      );
+      assert(el.isNone());
+    });
+  });
+
+  describe('nextSibling', function() {
+    it('returns some for default type match', function() {
+      const el = querySelector(document, '.text').andThen(nextSibling('.text'));
+      assert(el.isSome());
+      assert.equal(el.unwrap().tagName, 'P');
+    });
+
+    it('returns some for type match', function() {
+      const el = querySelector(document, '.text').andThen(
+        nextSibling('.text', HTMLSpanElement)
+      );
+      assert(el.isSome());
+      assert.equal(el.unwrap().tagName, 'SPAN');
+    });
+
+    it('returns none for no selector matches', function() {
+      const el = querySelector(document, '.text').andThen(
+        nextSibling('.missing')
+      );
+      assert(el.isNone());
+    });
+
+    it('returns none for selector match but type mismatch', function() {
+      const el = querySelector(document, '.text').andThen(
+        nextSibling('.text', HTMLFormElement)
+      );
+      assert(el.isNone());
     });
   });
 });

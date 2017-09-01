@@ -71,3 +71,39 @@ export function toggleClass<T: Element>(
     return Some(el);
   };
 }
+
+export function previousSibling<T: Element>(
+  selectors: string,
+  klass: Class<Element> = HTMLElement
+): T => Option<T> {
+  return function previousElement(el: T): Option<T> {
+    const sibling = el.previousElementSibling;
+    if (!sibling) {
+      return None;
+    }
+
+    if (sibling instanceof klass && sibling.matches(selectors)) {
+      return Some(sibling);
+    }
+
+    return previousElement(sibling, selectors, klass);
+  };
+}
+
+export function nextSibling<T: Element>(
+  selectors: string,
+  klass: Class<Element> = HTMLElement
+): T => Option<T> {
+  return function nextElement(el: T): Option<T> {
+    const sibling = el.nextElementSibling;
+    if (!sibling) {
+      return None;
+    }
+
+    if (sibling instanceof klass && sibling.matches(selectors)) {
+      return Some(sibling);
+    }
+
+    return nextElement(sibling, selectors, klass);
+  };
+}
