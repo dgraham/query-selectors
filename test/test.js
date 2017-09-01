@@ -3,7 +3,15 @@
 import assert from 'assert';
 import jsdom from 'jsdom-global';
 import {after, before, describe, it} from 'mocha';
-import {closest, query, querySelector, querySelectorAll} from '../index';
+import {
+  closest,
+  query,
+  querySelector,
+  querySelectorAll,
+  addClass,
+  removeClass,
+  toggleClass
+} from '../index';
 import {polyfill} from './closest';
 
 describe('typed selector queries', function() {
@@ -113,6 +121,55 @@ describe('typed selector queries', function() {
       const child = querySelector(document, '.child');
       const parent = closest(child.unwrap(), '.parent', HTMLImageElement);
       assert(parent.isNone());
+    });
+  });
+
+  describe('addClass', function() {
+    it('adds class names', function() {
+      const el = querySelector(document, '.text').andThen(addClass('a', 'b'));
+      assert(el.isSome());
+      assert(el.unwrap().classList.contains('a'));
+      assert(el.unwrap().classList.contains('b'));
+    });
+  });
+
+  describe('removeClass', function() {
+    it('removes class names', function() {
+      const el = querySelector(document, '.text')
+        .andThen(addClass('a', 'b', 'c'))
+        .andThen(removeClass('a', 'b'));
+      assert(el.isSome());
+      assert(!el.unwrap().classList.contains('a'));
+      assert(!el.unwrap().classList.contains('b'));
+      assert(el.unwrap().classList.contains('c'));
+    });
+  });
+
+  describe('toggleClass', function() {
+    it('toggles class name', function() {
+      const el = querySelector(document, '.text').andThen(toggleClass('a'));
+      assert(el.isSome());
+      assert(el.unwrap().classList.contains('a'));
+
+      el.andThen(toggleClass('a'));
+      assert(!el.unwrap().classList.contains('a'));
+    });
+
+    it('toggles class name on', function() {
+      const el = querySelector(document, '.text')
+        .andThen(toggleClass('a', true))
+        .andThen(toggleClass('a', true));
+      assert(el.isSome());
+      assert(el.unwrap().classList.contains('a'));
+    });
+
+    it('toggles class name off', function() {
+      const el = querySelector(document, '.text')
+        .andThen(addClass('a'))
+        .andThen(toggleClass('a', false))
+        .andThen(toggleClass('a', false));
+      assert(el.isSome());
+      assert(!el.unwrap().classList.contains('a'));
     });
   });
 });

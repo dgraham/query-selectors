@@ -45,3 +45,29 @@ export function closest<T: Element>(
   const ancestor = element.closest(selectors);
   return ancestor instanceof klass ? Some(ancestor) : None;
 }
+
+export function addClass<T: Element>(...names: Array<string>): T => Option<T> {
+  return (el: T) => {
+    el.classList.add(...names);
+    return Some(el);
+  };
+}
+
+export function removeClass<T: Element>(
+  ...names: Array<string>
+): T => Option<T> {
+  return (el: T) => {
+    el.classList.remove(...names);
+    return Some(el);
+  };
+}
+
+export function toggleClass<T: Element>(
+  name: string,
+  force?: boolean
+): T => Option<T> {
+  return (el: T) => {
+    el.classList.toggle(name, force);
+    return Some(el);
+  };
+}
