@@ -26,7 +26,7 @@
   "author": "David Graham",
   "license": "MIT",
   "dependencies": {
-    "option-type": "^0.1.1"
+    "option-type": "^0.1.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
