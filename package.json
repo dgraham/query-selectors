@@ -1,6 +1,6 @@
 {
   "name": "query-selectors",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Use querySelector with Option return types",
   "repository": "dgraham/query-selectors",
   "main": "dist/index.js",
