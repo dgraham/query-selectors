@@ -14,7 +14,13 @@ import {
   nextSibling,
   previousSibling,
   getAttribute,
-  setAttribute
+  setAttribute,
+  append,
+  prepend,
+  after,
+  before,
+  replaceWith,
+  remove
 } from '../index';
 import {polyfill} from './closest';
 
@@ -263,6 +269,67 @@ describe('typed selector queries', function() {
         .andThen(getAttribute('alt'));
       assert(value.isSome());
       assert.equal(value.unwrap(), 'hello');
+    });
+  });
+
+  describe('append', function() {
+    it('appends after last child', function() {
+      const el = querySelector(document, '.text').andThen(
+        append('hello', 'world')
+      );
+      assert(el.isSome());
+      assert.equal(el.unwrap().textContent, 'onehelloworld');
+    });
+  });
+
+  describe('prepend', function() {
+    it('prepends before first child', function() {
+      const el = querySelector(document, '.text').andThen(
+        prepend('hello', 'world')
+      );
+      assert(el.isSome());
+      assert.equal(el.unwrap().textContent, 'helloworldone');
+    });
+  });
+
+  describe('after', function() {
+    it('appends after the element', function() {
+      const el = querySelector(document, '.text').andThen(
+        after('hello', 'world')
+      );
+      assert(el.isSome());
+      assert.equal(el.unwrap().nextSibling.textContent, 'hello');
+    });
+  });
+
+  describe('before', function() {
+    it('prepends before the element', function() {
+      const el = querySelector(document, '.text').andThen(
+        before('hello', 'world')
+      );
+      assert(el.isSome());
+      assert.equal(el.unwrap().previousSibling.textContent, 'world');
+    });
+  });
+
+  describe('replaceWith', function() {
+    it('replaces the element with nodes', function() {
+      const el = querySelector(document, '.child').andThen(
+        replaceWith('hello', 'world')
+      );
+      assert(el.isSome());
+      assert(querySelector(document, '.child').isNone());
+
+      const parent = querySelector(document, '.parent').unwrap();
+      assert.equal(parent.textContent.trim(), 'helloworld');
+    });
+  });
+
+  describe('remove', function() {
+    it('removes the element from the tree', function() {
+      const el = querySelector(document, '.parent').andThen(remove);
+      assert(el.isSome());
+      assert(querySelector(document, '.parent').isNone());
     });
   });
 });

@@ -124,3 +124,53 @@ export function setAttribute<T: Element>(
     return Some(el);
   };
 }
+
+export function append<T: Element>(
+  ...nodes: Array<string | Node>
+): T => Option<T> {
+  return function appendTo(el: T): Option<T> {
+    el.append(...nodes);
+    return Some(el);
+  };
+}
+
+export function prepend<T: Element>(
+  ...nodes: Array<string | Node>
+): T => Option<T> {
+  return function prependTo(el: T): Option<T> {
+    el.prepend(...nodes);
+    return Some(el);
+  };
+}
+
+export function after<T: Element>(
+  ...nodes: Array<string | Node>
+): T => Option<T> {
+  return function addAfter(el: T): Option<T> {
+    el.after(...nodes);
+    return Some(el);
+  };
+}
+
+export function before<T: Element>(
+  ...nodes: Array<string | Node>
+): T => Option<T> {
+  return function addBefore(el: T): Option<T> {
+    el.before(...nodes);
+    return Some(el);
+  };
+}
+
+export function replaceWith<T: Element>(
+  ...nodes: Array<string | Node>
+): T => Option<T> {
+  return function replace(el: T): Option<T> {
+    el.replaceWith(...nodes);
+    return Some(el);
+  };
+}
+
+export function remove<T: Element>(el: T): Option<T> {
+  el.remove();
+  return Some(el);
+}
