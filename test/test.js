@@ -20,7 +20,8 @@ import {
   after,
   before,
   replaceWith,
-  remove
+  remove,
+  namedItem
 } from '../index';
 import {polyfill} from './closest';
 
@@ -37,6 +38,9 @@ describe('typed selector queries', function() {
       <div class="parent">
         <div class="child">four</div>
       </div>
+      <form>
+        <input type="text" name="url" value="/hello"/>
+      </form>
     `;
   });
 
@@ -330,6 +334,26 @@ describe('typed selector queries', function() {
       const el = querySelector(document, '.parent').andThen(remove);
       assert(el.isSome());
       assert(querySelector(document, '.parent').isNone());
+    });
+  });
+
+  describe('namedItem', function() {
+    it('returns some for matching input name', function() {
+      const el = querySelector(document, 'form').andThen(namedItem('url'));
+      assert(el.isSome());
+      assert.equal(el.unwrap().value, '/hello');
+    });
+
+    it('returns none for missing input name', function() {
+      const el = querySelector(document, 'form').andThen(namedItem('missing'));
+      assert(el.isNone());
+    });
+
+    it('returns none for type mismatch', function() {
+      const el = querySelector(document, 'form').andThen(
+        namedItem('url', HTMLSelectElement)
+      );
+      assert(el.isNone());
     });
   });
 });

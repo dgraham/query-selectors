@@ -174,3 +174,13 @@ export function remove<T: Element>(el: T): Option<T> {
   el.remove();
   return Some(el);
 }
+
+export function namedItem<T: HTMLElement>(
+  name: string,
+  klass: Class<HTMLElement> = HTMLInputElement
+): HTMLFormElement => Option<T> {
+  return function named(form: HTMLFormElement) {
+    const el = form.elements.namedItem(name);
+    return el instanceof klass ? Some(el) : None;
+  };
+}
