@@ -2,7 +2,7 @@
 
 import assert from 'assert';
 import jsdom from 'jsdom-global';
-import {after, before, describe, it} from 'mocha';
+import {afterEach, beforeEach, describe, it} from 'mocha';
 import {
   closest,
   query,
@@ -19,7 +19,7 @@ import {
 import {polyfill} from './closest';
 
 describe('typed selector queries', function() {
-  before(function() {
+  beforeEach(function() {
     this.cleanup = jsdom();
     polyfill();
 
@@ -34,7 +34,7 @@ describe('typed selector queries', function() {
     `;
   });
 
-  after(function() {
+  afterEach(function() {
     this.cleanup();
   });
 
@@ -241,24 +241,24 @@ describe('typed selector queries', function() {
 
   describe('getAttribute', function() {
     it('returns none for missing attribute', function() {
-      const value = querySelector(document, '.child').andThen(
+      const value = querySelector(document, '.text').andThen(
         getAttribute('missing')
       );
       assert(value.isNone());
     });
 
     it('returns some for attribute', function() {
-      const value = querySelector(document, '.child').andThen(
+      const value = querySelector(document, '.text').andThen(
         getAttribute('class')
       );
       assert(value.isSome());
-      assert.equal(value.unwrap(), 'child');
+      assert.equal(value.unwrap(), 'text');
     });
   });
 
   describe('setAttribute', function() {
     it('sets an attribute value', function() {
-      const value = querySelector(document, '.child')
+      const value = querySelector(document, '.text')
         .andThen(setAttribute('alt', 'hello'))
         .andThen(getAttribute('alt'));
       assert(value.isSome());
