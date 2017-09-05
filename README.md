@@ -285,7 +285,7 @@ checks. It's an addition to JavaScript's syntax that would alleviate the need
 for many of the conditional tests resulting from `document.querySelector()`.
 
 ```js
-const el = document.querySelector('.expected-element)
+const el = document.querySelector('.expected-element')
 el?.classList.add('selected')
 el?.setAttribute('title', 'hello')
 ```
