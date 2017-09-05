@@ -210,7 +210,7 @@ chained onto it with a call to `andThen`.
 ```js
 querySelector(document, '.selected')
   .andThen(removeClass('selected', 'active'))
-  .andThen(addClass('hidden', ''))
+  .andThen(addClass('hidden', 'inactive'))
   .andthen(nextSibling('p'))
   .andThen(after('A text node'))
 ```
