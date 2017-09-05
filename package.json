@@ -1,7 +1,7 @@
 {
   "name": "query-selectors",
   "version": "0.1.1",
-  "description": "Use querySelector with Option return types",
+  "description": "A querySelector function returning an Option type rather than null.",
   "repository": "dgraham/query-selectors",
   "main": "dist/index.umd.js",
   "module": "dist/index.esm.js",
