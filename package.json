@@ -29,7 +29,7 @@
   "author": "David Graham",
   "license": "MIT",
   "dependencies": {
-    "option-type": "^0.1.3"
+    "option-type": "^0.1.4"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -37,7 +37,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-flow": "^6.23.0",
     "babel-register": "^6.26.0",
-    "eslint": "^4.6.0",
+    "eslint": "^4.6.1",
     "eslint-plugin-prettier": "^2.2.0",
     "flow-bin": "^0.54.0",
     "jsdom": "^11.2.0",
@@ -46,7 +46,6 @@
     "prettier": "^1.6.1"
   },
   "files": [
-    "index.js",
     "dist"
   ]
 }
