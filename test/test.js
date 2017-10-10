@@ -18,6 +18,7 @@ import {
   setAttribute,
   getValue,
   setValue,
+  setText,
   append,
   prepend,
   after,
@@ -329,6 +330,14 @@ describe('typed selector queries', function() {
         .andThen(getValue());
       assert(value.isSome());
       assert.equal(value.unwrap(), 'updated');
+    });
+  });
+
+  describe('setText', function() {
+    it('sets text content', function() {
+      const el = querySelector(document, '.text').andThen(setText('updated'));
+      assert(el.isSome());
+      assert.equal(el.unwrap().textContent, 'updated');
     });
   });
 

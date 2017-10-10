@@ -154,6 +154,13 @@ export function setValue<T: Valuable>(value: string): T => Option<T> {
   };
 }
 
+export function setText<T: Node>(value: string): T => Option<T> {
+  return function set(el: T): Option<T> {
+    el.textContent = value;
+    return Some(el);
+  };
+}
+
 export function append<T: Element>(
   ...nodes: Array<string | Node>
 ): T => Option<T> {

@@ -225,6 +225,7 @@ querySelector(document, '.selected')
 - `setAttribute(name, value)`
 - `getValue()`
 - `setValue(value)`
+- `setText(value)`
 - `append(nodes)`
 - `prepend(nodes)`
 - `after(nodes)`
