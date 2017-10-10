@@ -8,6 +8,7 @@ import {
   query,
   querySelector,
   querySelectorAll,
+  descendant,
   addClass,
   removeClass,
   toggleClass,
@@ -138,6 +139,31 @@ describe('typed selector queries', function() {
       const child = querySelector(document, '.child');
       const parent = closest(child.unwrap(), '.parent', HTMLImageElement);
       assert(parent.isNone());
+    });
+  });
+
+  describe('descendant', function() {
+    it('returns none for failed subclass filter', function() {
+      const el = querySelector(document, '.parent').andThen(
+        descendant('.child', HTMLButtonElement)
+      );
+      assert(el.isNone());
+    });
+
+    it('returns some for matching subclass filter', function() {
+      const el = querySelector(document, '.parent').andThen(
+        descendant('.child', HTMLDivElement)
+      );
+      assert(el.isSome());
+      assert.equal(el.unwrap().textContent, 'four');
+    });
+
+    it('returns some for default subclass filter', function() {
+      const el = querySelector(document, '.parent').andThen(
+        descendant('.child')
+      );
+      assert(el.isSome());
+      assert.equal(el.unwrap().textContent, 'four');
     });
   });
 

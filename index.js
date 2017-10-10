@@ -46,6 +46,15 @@ export function closest<T: Element>(
   return ancestor instanceof klass ? Some(ancestor) : None;
 }
 
+export function descendant<T: Element>(
+  selectors: string,
+  klass: Class<Element> = HTMLElement
+): T => Option<T> {
+  return function child(el: T): Option<T> {
+    return querySelector(el, selectors, klass);
+  };
+}
+
 export function addClass<T: Element>(...names: Array<string>): T => Option<T> {
   return function add(el: T): Option<T> {
     el.classList.add(...names);

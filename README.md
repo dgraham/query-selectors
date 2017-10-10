@@ -218,10 +218,13 @@ querySelector(document, '.selected')
 - `addClass(names)`
 - `removeClass(names)`
 - `toggleClass(name, force)`
+- `descendant(selectors, klass)`
 - `previousSibling(selectors, klass)`
 - `nextSibling(selectors, klass)`
 - `getAttribute(name)`
 - `setAttribute(name, value)`
+- `getValue()`
+- `setValue(value)`
 - `append(nodes)`
 - `prepend(nodes)`
 - `after(nodes)`
