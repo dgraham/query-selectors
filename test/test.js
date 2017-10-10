@@ -15,6 +15,8 @@ import {
   previousSibling,
   getAttribute,
   setAttribute,
+  getValue,
+  setValue,
   append,
   prepend,
   after,
@@ -39,7 +41,8 @@ describe('typed selector queries', function() {
         <div class="child">four</div>
       </div>
       <form>
-        <input type="text" name="url" value="/hello"/>
+        <input type="text" name="url" value="/hello">
+        <input type="text" name="empty" value="">
       </form>
     `;
   });
@@ -273,6 +276,33 @@ describe('typed selector queries', function() {
         .andThen(getAttribute('alt'));
       assert(value.isSome());
       assert.equal(value.unwrap(), 'hello');
+    });
+  });
+
+  describe('getValue', function() {
+    it('returns none for empty value', function() {
+      const value = querySelector(document, 'input[name=empty]').andThen(
+        getValue()
+      );
+      assert(value.isNone());
+    });
+
+    it('returns some for value', function() {
+      const value = querySelector(document, 'input[name=url]').andThen(
+        getValue()
+      );
+      assert(value.isSome());
+      assert.equal(value.unwrap(), '/hello');
+    });
+  });
+
+  describe('setValue', function() {
+    it('sets an input value', function() {
+      const value = querySelector(document, 'input[name=url]')
+        .andThen(setValue('updated'))
+        .andThen(getValue());
+      assert(value.isSome());
+      assert.equal(value.unwrap(), 'updated');
     });
   });
 

@@ -125,6 +125,26 @@ export function setAttribute<T: Element>(
   };
 }
 
+type Valuable =
+  | HTMLInputElement
+  | HTMLTextAreaElement
+  | HTMLButtonElement
+  | HTMLSelectElement
+  | HTMLOptionElement;
+
+export function getValue(): Valuable => Option<string> {
+  return function get(el: Valuable): Option<string> {
+    return el.value ? Some(el.value) : None;
+  };
+}
+
+export function setValue<T: Valuable>(value: string): T => Option<T> {
+  return function set(el: T): Option<T> {
+    el.value = value;
+    return Some(el);
+  };
+}
+
 export function append<T: Element>(
   ...nodes: Array<string | Node>
 ): T => Option<T> {
