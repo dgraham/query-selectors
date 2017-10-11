@@ -218,7 +218,7 @@ querySelector(document, '.selected')
 - `addClass(names)`
 - `removeClass(names)`
 - `toggleClass(name, force)`
-- `descendant(selectors, klass)`
+- `find(selectors, klass)`
 - `previousSibling(selectors, klass)`
 - `nextSibling(selectors, klass)`
 - `getAttribute(name)`

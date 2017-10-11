@@ -8,7 +8,7 @@ import {
   query,
   querySelector,
   querySelectorAll,
-  descendant,
+  find,
   addClass,
   removeClass,
   toggleClass,
@@ -143,26 +143,24 @@ describe('typed selector queries', function() {
     });
   });
 
-  describe('descendant', function() {
+  describe('find', function() {
     it('returns none for failed subclass filter', function() {
       const el = querySelector(document, '.parent').andThen(
-        descendant('.child', HTMLButtonElement)
+        find('.child', HTMLButtonElement)
       );
       assert(el.isNone());
     });
 
     it('returns some for matching subclass filter', function() {
       const el = querySelector(document, '.parent').andThen(
-        descendant('.child', HTMLDivElement)
+        find('.child', HTMLDivElement)
       );
       assert(el.isSome());
       assert.equal(el.unwrap().textContent, 'four');
     });
 
     it('returns some for default subclass filter', function() {
-      const el = querySelector(document, '.parent').andThen(
-        descendant('.child')
-      );
+      const el = querySelector(document, '.parent').andThen(find('.child'));
       assert(el.isSome());
       assert.equal(el.unwrap().textContent, 'four');
     });
