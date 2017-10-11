@@ -141,10 +141,8 @@ type Valuable =
   | HTMLSelectElement
   | HTMLOptionElement;
 
-export function getValue(): Valuable => Option<string> {
-  return function get(el: Valuable): Option<string> {
-    return el.value ? Some(el.value) : None;
-  };
+export function getValue(el: Valuable): Option<string> {
+  return el.value ? Some(el.value) : None;
 }
 
 export function setValue<T: Valuable>(value: string): T => Option<T> {

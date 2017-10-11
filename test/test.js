@@ -309,14 +309,14 @@ describe('typed selector queries', function() {
   describe('getValue', function() {
     it('returns none for empty value', function() {
       const value = querySelector(document, 'input[name=empty]').andThen(
-        getValue()
+        getValue
       );
       assert(value.isNone());
     });
 
     it('returns some for value', function() {
       const value = querySelector(document, 'input[name=url]').andThen(
-        getValue()
+        getValue
       );
       assert(value.isSome());
       assert.equal(value.unwrap(), '/hello');
@@ -327,7 +327,7 @@ describe('typed selector queries', function() {
     it('sets an input value', function() {
       const value = querySelector(document, 'input[name=url]')
         .andThen(setValue('updated'))
-        .andThen(getValue());
+        .andThen(getValue);
       assert(value.isSome());
       assert.equal(value.unwrap(), 'updated');
     });
