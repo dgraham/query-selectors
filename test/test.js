@@ -63,8 +63,8 @@ describe('typed selector queries', function() {
     });
 
     it('returns an element for matching subclass filter', function() {
-      const el = query(document, '.text', HTMLParagraphElement);
-      assert.equal(el.textContent, 'one');
+      const el = query(document, '[name=url]', HTMLInputElement);
+      assert.equal(el.value, '/hello');
     });
   });
 
