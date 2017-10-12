@@ -1,0 +1,49 @@
+// @flow
+
+import {type Option} from 'option-type';
+
+type Queryable = Document | DocumentFragment | Element;
+
+declare export function query(context: Queryable, selectors: string): HTMLElement;
+declare export function query<T: Element>(context: Queryable, selectors: string, klass: Class<Element>): T;
+
+declare export function querySelector(context: Queryable, selectors: string): Option<HTMLElement>;
+declare export function querySelector<T: Element>(context: Queryable, selectors: string, klass: Class<T>): Option<T>;
+
+declare export function querySelectorAll(context: Queryable, selectors: string): Array<HTMLElement>;
+declare export function querySelectorAll<T: Element>(context: Queryable, selectors: string, klass: Class<T>): Array<T>;
+
+declare export function closest(element: Element, selectors: string): Option<HTMLElement>;
+declare export function closest<T: Element>(element: Element, selectors: string, klass: Class<T>): Option<T>;
+
+declare export function find(selectors: string): Queryable => Option<HTMLElement>;
+declare export function find<T: Element>(selectors: string, klass: Class<T>): Queryable => Option<T>;
+
+declare export function addClass<T: Element>(...names: Array<string>): T => Option<T>;
+declare export function removeClass<T: Element>(...names: Array<string>): T => Option<T>;
+declare export function toggleClass<T: Element>(name: string, force?: boolean): T => Option<T>;
+
+declare export function previousSibling(selectors: string): Element => Option<HTMLElement>;
+declare export function previousSibling<T: Element>(selectors: string, klass: Class<T>): Element => Option<T>;
+
+declare export function nextSibling(selectors: string): Element => Option<HTMLElement>;
+declare export function nextSibling<T: Element>(selectors: string, klass: Class<T>): Element => Option<T>;
+
+declare export function getAttribute(name: string): Element => Option<string>;
+declare export function setAttribute<T: Element>(name: string, value: string): T => Option<T>;
+
+type Valuable = HTMLInputElement | HTMLTextAreaElement | HTMLButtonElement | HTMLSelectElement | HTMLOptionElement;
+declare export function getValue(el: Valuable): Option<string>;
+declare export function setValue<T: Valuable>(value: string): T => Option<T>;
+
+declare export function setText<T: Node>(value: string): T => Option<T>;
+
+declare export function append<T: Element>(...nodes: Array<string | Node>): T => Option<T>;
+declare export function prepend<T: Element>(...nodes: Array<string | Node>): T => Option<T>;
+declare export function after<T: Element>(...nodes: Array<string | Node>): T => Option<T>;
+declare export function before<T: Element>(...nodes: Array<string | Node>): T => Option<T>;
+declare export function replaceWith<T: Element>(...nodes: Array<string | Node>): T => Option<T>;
+declare export function remove<T: Element>(el: T): Option<T>;
+
+declare export function namedItem(name: string): HTMLFormElement => Option<HTMLInputElement>;
+declare export function namedItem<T: HTMLElement>(name: string, klass: Class<T>): HTMLFormElement => Option<T>;

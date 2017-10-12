@@ -4,28 +4,28 @@ import assert from 'assert';
 import jsdom from 'jsdom-global';
 import {afterEach, beforeEach, describe, it} from 'mocha';
 import {
+  addClass,
+  after,
+  append,
+  before,
   closest,
+  find,
+  getAttribute,
+  getValue,
+  namedItem,
+  nextSibling,
+  prepend,
+  previousSibling,
   query,
   querySelector,
   querySelectorAll,
-  find,
-  addClass,
-  removeClass,
-  toggleClass,
-  nextSibling,
-  previousSibling,
-  getAttribute,
-  setAttribute,
-  getValue,
-  setValue,
-  setText,
-  append,
-  prepend,
-  after,
-  before,
-  replaceWith,
   remove,
-  namedItem
+  removeClass,
+  replaceWith,
+  setAttribute,
+  setText,
+  setValue,
+  toggleClass
 } from '../index';
 import {polyfill} from './closest';
 
@@ -306,16 +306,20 @@ describe('typed selector queries', function() {
 
   describe('getValue', function() {
     it('returns none for empty value', function() {
-      const value = querySelector(document, 'input[name=empty]').andThen(
-        getValue
-      );
+      const value = querySelector(
+        document,
+        'input[name=empty]',
+        HTMLInputElement
+      ).andThen(getValue);
       assert(value.isNone());
     });
 
     it('returns some for value', function() {
-      const value = querySelector(document, 'input[name=url]').andThen(
-        getValue
-      );
+      const value = querySelector(
+        document,
+        'input[name=url]',
+        HTMLInputElement
+      ).andThen(getValue);
       assert(value.isSome());
       assert.equal(value.unwrap(), '/hello');
     });
@@ -323,7 +327,7 @@ describe('typed selector queries', function() {
 
   describe('setValue', function() {
     it('sets an input value', function() {
-      const value = querySelector(document, 'input[name=url]')
+      const value = querySelector(document, 'input[name=url]', HTMLInputElement)
         .andThen(setValue('updated'))
         .andThen(getValue);
       assert(value.isSome());
@@ -361,21 +365,23 @@ describe('typed selector queries', function() {
 
   describe('after', function() {
     it('appends after the element', function() {
-      const el = querySelector(document, '.text').andThen(
-        after('hello', 'world')
-      );
-      assert(el.isSome());
-      assert.equal(el.unwrap().nextSibling.textContent, 'hello');
+      const value = querySelector(document, '.text')
+        .andThen(after('hello', 'world'))
+        .map(el => el.nextSibling)
+        .map(el => el.textContent);
+      assert(value.isSome());
+      assert.equal(value.unwrap(), 'hello');
     });
   });
 
   describe('before', function() {
     it('prepends before the element', function() {
-      const el = querySelector(document, '.text').andThen(
-        before('hello', 'world')
-      );
-      assert(el.isSome());
-      assert.equal(el.unwrap().previousSibling.textContent, 'world');
+      const value = querySelector(document, '.text')
+        .andThen(before('hello', 'world'))
+        .map(el => el.previousSibling)
+        .map(el => el.textContent);
+      assert(value.isSome());
+      assert.equal(value.unwrap(), 'world');
     });
   });
 
@@ -402,20 +408,21 @@ describe('typed selector queries', function() {
 
   describe('namedItem', function() {
     it('returns some for matching input name', function() {
-      const el = querySelector(document, 'form').andThen(namedItem('url'));
+      const form = querySelector(document, 'form', HTMLFormElement);
+      const el = form.andThen(namedItem('url'));
       assert(el.isSome());
       assert.equal(el.unwrap().value, '/hello');
     });
 
     it('returns none for missing input name', function() {
-      const el = querySelector(document, 'form').andThen(namedItem('missing'));
+      const form = querySelector(document, 'form', HTMLFormElement);
+      const el = form.andThen(namedItem('missing'));
       assert(el.isNone());
     });
 
     it('returns none for type mismatch', function() {
-      const el = querySelector(document, 'form').andThen(
-        namedItem('url', HTMLSelectElement)
-      );
+      const form = querySelector(document, 'form', HTMLFormElement);
+      const el = form.andThen(namedItem('url', HTMLSelectElement));
       assert(el.isNone());
     });
   });

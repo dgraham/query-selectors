@@ -7,8 +7,9 @@ type Queryable = Document | DocumentFragment | Element;
 export function query<T: Element>(
   context: Queryable,
   selectors: string,
-  klass: Class<Element> = HTMLElement
+  klass: Class<T>
 ): T {
+  klass = klass || HTMLElement;
   return querySelector(context, selectors, klass).expect(
     `Element not found: <${klass.name}> ${selectors}`
   );
@@ -17,8 +18,9 @@ export function query<T: Element>(
 export function querySelector<T: Element>(
   context: Queryable,
   selectors: string,
-  klass: Class<Element> = HTMLElement
+  klass: Class<T>
 ): Option<T> {
+  klass = klass || HTMLElement;
   const el = context.querySelector(selectors);
   return el instanceof klass ? Some(el) : None;
 }
@@ -26,8 +28,9 @@ export function querySelector<T: Element>(
 export function querySelectorAll<T: Element>(
   context: Queryable,
   selectors: string,
-  klass: Class<Element> = HTMLElement
+  klass: Class<T>
 ): Array<T> {
+  klass = klass || HTMLElement;
   const found = [];
   for (const el of context.querySelectorAll(selectors)) {
     if (el instanceof klass) {
@@ -40,17 +43,19 @@ export function querySelectorAll<T: Element>(
 export function closest<T: Element>(
   element: Element,
   selectors: string,
-  klass: Class<Element> = HTMLElement
+  klass: Class<T>
 ): Option<T> {
+  klass = klass || HTMLElement;
   const ancestor = element.closest(selectors);
   return ancestor instanceof klass ? Some(ancestor) : None;
 }
 
 export function find<T: Element>(
   selectors: string,
-  klass: Class<Element> = HTMLElement
-): T => Option<T> {
-  return function descendant(el: T): Option<T> {
+  klass: Class<T>
+): Queryable => Option<T> {
+  klass = klass || HTMLElement;
+  return function descendant(el: Queryable): Option<T> {
     return querySelector(el, selectors, klass);
   };
 }
@@ -83,9 +88,10 @@ export function toggleClass<T: Element>(
 
 export function previousSibling<T: Element>(
   selectors: string,
-  klass: Class<Element> = HTMLElement
-): T => Option<T> {
-  return function previousElement(el: T): Option<T> {
+  klass: Class<T>
+): Element => Option<T> {
+  klass = klass || HTMLElement;
+  return function previousElement(el: Element): Option<T> {
     const sibling = el.previousElementSibling;
     if (!sibling) {
       return None;
@@ -101,9 +107,10 @@ export function previousSibling<T: Element>(
 
 export function nextSibling<T: Element>(
   selectors: string,
-  klass: Class<Element> = HTMLElement
-): T => Option<T> {
-  return function nextElement(el: T): Option<T> {
+  klass: Class<T>
+): Element => Option<T> {
+  klass = klass || HTMLElement;
+  return function nextElement(el: Element): Option<T> {
     const sibling = el.nextElementSibling;
     if (!sibling) {
       return None;
@@ -211,8 +218,9 @@ export function remove<T: Element>(el: T): Option<T> {
 
 export function namedItem<T: HTMLElement>(
   name: string,
-  klass: Class<HTMLElement> = HTMLInputElement
+  klass: Class<T>
 ): HTMLFormElement => Option<T> {
+  klass = klass || HTMLInputElement;
   return function named(form: HTMLFormElement) {
     const el = form.elements.namedItem(name);
     return el instanceof klass ? Some(el) : None;
