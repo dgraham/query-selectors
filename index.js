@@ -107,16 +107,12 @@ export function previousSibling<T: Element>(
 ): Element => Option<T> {
   klass = klass || HTMLElement;
   return function previousElement(el: Element): Option<T> {
-    const sibling = el.previousElementSibling;
-    if (!sibling) {
-      return None;
+    const node = el.previousElementSibling;
+    if (!node) return None;
+    if (node instanceof klass && node.matches(selectors)) {
+      return Some(node);
     }
-
-    if (sibling instanceof klass && sibling.matches(selectors)) {
-      return Some(sibling);
-    }
-
-    return previousElement(sibling, selectors, klass);
+    return previousElement(node);
   };
 }
 
@@ -126,16 +122,12 @@ export function nextSibling<T: Element>(
 ): Element => Option<T> {
   klass = klass || HTMLElement;
   return function nextElement(el: Element): Option<T> {
-    const sibling = el.nextElementSibling;
-    if (!sibling) {
-      return None;
+    const node = el.nextElementSibling;
+    if (!node) return None;
+    if (node instanceof klass && node.matches(selectors)) {
+      return Some(node);
     }
-
-    if (sibling instanceof klass && sibling.matches(selectors)) {
-      return Some(sibling);
-    }
-
-    return nextElement(sibling, selectors, klass);
+    return nextElement(node);
   };
 }
 
