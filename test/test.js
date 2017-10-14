@@ -14,6 +14,7 @@ import {
   getValue,
   namedItem,
   nextSibling,
+  parent,
   prepend,
   previousSibling,
   query,
@@ -163,6 +164,29 @@ describe('typed selector queries', function() {
       const el = querySelector(document, '.parent').andThen(find('.child'));
       assert(el.isSome());
       assert.equal(el.unwrap().textContent, 'four');
+    });
+  });
+
+  describe('parent', function() {
+    it('returns none for failed subclass filter', function() {
+      const el = querySelector(document, '.child').andThen(
+        parent('.parent', HTMLButtonElement)
+      );
+      assert(el.isNone());
+    });
+
+    it('returns some for matching subclass filter', function() {
+      const el = querySelector(document, '.child').andThen(
+        parent('.parent', HTMLDivElement)
+      );
+      assert(el.isSome());
+      assert(el.unwrap().classList.contains('parent'));
+    });
+
+    it('returns some for default subclass filter', function() {
+      const el = querySelector(document, '.child').andThen(parent('.parent'));
+      assert(el.isSome());
+      assert(el.unwrap().classList.contains('parent'));
     });
   });
 

@@ -215,12 +215,22 @@ querySelector(document, '.selected')
   .andThen(after('A text node'))
 ```
 
+### Traversal
+
+Traverse up and down the tree from a root element.
+
+- `find(selectors, klass)`
+- `parent(selectors, klass)`
+- `previousSibling(selectors, klass)`
+- `nextSibling(selectors, klass)`
+
+### Mutation
+
+Add, remove, and change nodes in the tree.
+
 - `addClass(names)`
 - `removeClass(names)`
 - `toggleClass(name, force)`
-- `find(selectors, klass)`
-- `previousSibling(selectors, klass)`
-- `nextSibling(selectors, klass)`
 - `getAttribute(name)`
 - `setAttribute(name, value)`
 - `getValue()`

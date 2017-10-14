@@ -60,6 +60,21 @@ export function find<T: Element>(
   };
 }
 
+export function parent<T: Element>(
+  selectors: string,
+  klass: Class<T>
+): Element => Option<T> {
+  klass = klass || HTMLElement;
+  return function ancestor(el: Element): Option<T> {
+    const node = el.parentElement;
+    if (!node) return None;
+    if (node instanceof klass && node.matches(selectors)) {
+      return Some(node);
+    }
+    return ancestor(node);
+  };
+}
+
 export function addClass<T: Element>(...names: Array<string>): T => Option<T> {
   return function add(el: T): Option<T> {
     el.classList.add(...names);

@@ -19,6 +19,9 @@ declare export function closest<T: Element>(element: Element, selectors: string,
 declare export function find(selectors: string): Queryable => Option<HTMLElement>;
 declare export function find<T: Element>(selectors: string, klass: Class<T>): Queryable => Option<T>;
 
+declare export function parent(selectors: string): Element => Option<HTMLElement>;
+declare export function parent<T: Element>(selectors: string, klass: Class<T>): Element => Option<T>;
+
 declare export function addClass<T: Element>(...names: Array<string>): T => Option<T>;
 declare export function removeClass<T: Element>(...names: Array<string>): T => Option<T>;
 declare export function toggleClass<T: Element>(name: string, force?: boolean): T => Option<T>;
