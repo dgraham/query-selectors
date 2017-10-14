@@ -13,10 +13,10 @@ import {
   getAttribute,
   getValue,
   namedItem,
-  nextSibling,
+  next,
   parent,
   prepend,
-  previousSibling,
+  prev,
   query,
   querySelector,
   querySelectorAll,
@@ -239,63 +239,57 @@ describe('typed selector queries', function() {
     });
   });
 
-  describe('previousSibling', function() {
+  describe('prev', function() {
     it('returns some for default type match', function() {
-      const el = querySelector(document, 'span.text').andThen(
-        previousSibling('.text')
-      );
+      const el = querySelector(document, 'span.text').andThen(prev('.text'));
       assert(el.isSome());
       assert.equal(el.unwrap().tagName, 'P');
     });
 
     it('returns some for type match', function() {
       const el = querySelector(document, 'span.text').andThen(
-        previousSibling('.text', HTMLParagraphElement)
+        prev('.text', HTMLParagraphElement)
       );
       assert(el.isSome());
       assert.equal(el.unwrap().tagName, 'P');
     });
 
     it('returns none for no selector matches', function() {
-      const el = querySelector(document, 'span.text').andThen(
-        previousSibling('.missing')
-      );
+      const el = querySelector(document, 'span.text').andThen(prev('.missing'));
       assert(el.isNone());
     });
 
     it('returns none for selector match but type mismatch', function() {
       const el = querySelector(document, 'span.text').andThen(
-        previousSibling('.text', HTMLFormElement)
+        prev('.text', HTMLFormElement)
       );
       assert(el.isNone());
     });
   });
 
-  describe('nextSibling', function() {
+  describe('next', function() {
     it('returns some for default type match', function() {
-      const el = querySelector(document, '.text').andThen(nextSibling('.text'));
+      const el = querySelector(document, '.text').andThen(next('.text'));
       assert(el.isSome());
       assert.equal(el.unwrap().tagName, 'P');
     });
 
     it('returns some for type match', function() {
       const el = querySelector(document, '.text').andThen(
-        nextSibling('.text', HTMLSpanElement)
+        next('.text', HTMLSpanElement)
       );
       assert(el.isSome());
       assert.equal(el.unwrap().tagName, 'SPAN');
     });
 
     it('returns none for no selector matches', function() {
-      const el = querySelector(document, '.text').andThen(
-        nextSibling('.missing')
-      );
+      const el = querySelector(document, '.text').andThen(next('.missing'));
       assert(el.isNone());
     });
 
     it('returns none for selector match but type mismatch', function() {
       const el = querySelector(document, '.text').andThen(
-        nextSibling('.text', HTMLFormElement)
+        next('.text', HTMLFormElement)
       );
       assert(el.isNone());
     });

@@ -221,8 +221,8 @@ Traverse up and down the tree from a root element.
 
 - `find(selectors, klass)`
 - `parent(selectors, klass)`
-- `previousSibling(selectors, klass)`
-- `nextSibling(selectors, klass)`
+- `prev(selectors, klass)`
+- `next(selectors, klass)`
 
 ### Mutation
 

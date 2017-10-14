@@ -26,11 +26,11 @@ declare export function addClass<T: Element>(...names: Array<string>): T => Opti
 declare export function removeClass<T: Element>(...names: Array<string>): T => Option<T>;
 declare export function toggleClass<T: Element>(name: string, force?: boolean): T => Option<T>;
 
-declare export function previousSibling(selectors: string): Element => Option<HTMLElement>;
-declare export function previousSibling<T: Element>(selectors: string, klass: Class<T>): Element => Option<T>;
+declare export function prev(selectors: string): Element => Option<HTMLElement>;
+declare export function prev<T: Element>(selectors: string, klass: Class<T>): Element => Option<T>;
 
-declare export function nextSibling(selectors: string): Element => Option<HTMLElement>;
-declare export function nextSibling<T: Element>(selectors: string, klass: Class<T>): Element => Option<T>;
+declare export function next(selectors: string): Element => Option<HTMLElement>;
+declare export function next<T: Element>(selectors: string, klass: Class<T>): Element => Option<T>;
 
 declare export function getAttribute(name: string): Element => Option<string>;
 declare export function setAttribute<T: Element>(name: string, value: string): T => Option<T>;

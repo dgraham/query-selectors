@@ -101,7 +101,7 @@ export function toggleClass<T: Element>(
   };
 }
 
-export function previousSibling<T: Element>(
+export function prev<T: Element>(
   selectors: string,
   klass: Class<T>
 ): Element => Option<T> {
@@ -116,7 +116,7 @@ export function previousSibling<T: Element>(
   };
 }
 
-export function nextSibling<T: Element>(
+export function next<T: Element>(
   selectors: string,
   klass: Class<T>
 ): Element => Option<T> {
