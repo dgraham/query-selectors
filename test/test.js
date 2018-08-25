@@ -28,12 +28,10 @@ import {
   setValue,
   toggleClass
 } from '../index';
-import {polyfill} from './closest';
 
 describe('typed selector queries', function() {
   beforeEach(function() {
     this.cleanup = jsdom();
-    polyfill();
 
     if (!document.body) return;
     document.body.innerHTML = `
