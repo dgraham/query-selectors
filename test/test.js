@@ -29,8 +29,8 @@ import {
   toggleClass
 } from '../index';
 
-describe('typed selector queries', function() {
-  beforeEach(function() {
+describe('typed selector queries', function () {
+  beforeEach(function () {
     this.cleanup = jsdom();
 
     if (!document.body) return;
@@ -48,44 +48,44 @@ describe('typed selector queries', function() {
     `;
   });
 
-  afterEach(function() {
+  afterEach(function () {
     this.cleanup();
   });
 
-  describe('query', function() {
-    it('throws for failed selector match', function() {
+  describe('query', function () {
+    it('throws for failed selector match', function () {
       assert.throws(() => query(document, '.missing'));
     });
 
-    it('throws for failed subclass filter', function() {
+    it('throws for failed subclass filter', function () {
       assert.throws(() => query(document, '.text', HTMLButtonElement));
     });
 
-    it('returns an element for matching subclass filter', function() {
+    it('returns an element for matching subclass filter', function () {
       const el = query(document, '[name=url]', HTMLInputElement);
       assert.equal(el.value, '/hello');
     });
   });
 
-  describe('querySelector', function() {
-    it('returns none for failed subclass filter', function() {
+  describe('querySelector', function () {
+    it('returns none for failed subclass filter', function () {
       const el = querySelector(document, '.text', HTMLButtonElement);
       assert(el.isNone());
     });
 
-    it('returns some for matching subclass filter', function() {
+    it('returns some for matching subclass filter', function () {
       const el = querySelector(document, '.text', HTMLParagraphElement);
       assert(el.isSome());
       assert.equal(el.unwrap().textContent, 'one');
     });
 
-    it('returns some for default subclass filter', function() {
+    it('returns some for default subclass filter', function () {
       const el = querySelector(document, '.text');
       assert(el.isSome());
       assert.equal(el.unwrap().textContent, 'one');
     });
 
-    it('queries an element root', function() {
+    it('queries an element root', function () {
       const parent = querySelector(document, '.parent');
       assert(parent.isSome());
 
@@ -94,7 +94,7 @@ describe('typed selector queries', function() {
       assert.equal(child.unwrap().textContent, 'four');
     });
 
-    it('queries a document fragment root', function() {
+    it('queries a document fragment root', function () {
       const fragment = document.createDocumentFragment();
       const child = document.createElement('div');
       child.classList.add('child');
@@ -105,8 +105,8 @@ describe('typed selector queries', function() {
     });
   });
 
-  describe('querySelectorAll', function() {
-    it('finds all elements matching selector', function() {
+  describe('querySelectorAll', function () {
+    it('finds all elements matching selector', function () {
       const found = querySelectorAll(document, '.text');
       assert.equal(found.length, 3);
       assert.equal(found[0].textContent, 'one');
@@ -114,7 +114,7 @@ describe('typed selector queries', function() {
       assert.equal(found[2].textContent, 'three');
     });
 
-    it('finds only elements matching subclass filter', function() {
+    it('finds only elements matching subclass filter', function () {
       const found = querySelectorAll(document, '.text', HTMLParagraphElement);
       assert.equal(found.length, 2);
       assert.equal(found[0].textContent, 'one');
@@ -122,35 +122,35 @@ describe('typed selector queries', function() {
     });
   });
 
-  describe('closest', function() {
-    it('finds parent by selector', function() {
+  describe('closest', function () {
+    it('finds parent by selector', function () {
       const child = querySelector(document, '.child');
       const parent = closest(child.unwrap(), '.parent');
       assert(parent.isSome());
     });
 
-    it('returns none for no selector matches', function() {
+    it('returns none for no selector matches', function () {
       const child = querySelector(document, '.child');
       const parent = closest(child.unwrap(), '.missing');
       assert(parent.isNone());
     });
 
-    it('returns none for selector match but type mismatch', function() {
+    it('returns none for selector match but type mismatch', function () {
       const child = querySelector(document, '.child');
       const parent = closest(child.unwrap(), '.parent', HTMLImageElement);
       assert(parent.isNone());
     });
   });
 
-  describe('find', function() {
-    it('returns none for failed subclass filter', function() {
+  describe('find', function () {
+    it('returns none for failed subclass filter', function () {
       const el = querySelector(document, '.parent').andThen(
         find('.child', HTMLButtonElement)
       );
       assert(el.isNone());
     });
 
-    it('returns some for matching subclass filter', function() {
+    it('returns some for matching subclass filter', function () {
       const el = querySelector(document, '.parent').andThen(
         find('.child', HTMLDivElement)
       );
@@ -158,22 +158,22 @@ describe('typed selector queries', function() {
       assert.equal(el.unwrap().textContent, 'four');
     });
 
-    it('returns some for default subclass filter', function() {
+    it('returns some for default subclass filter', function () {
       const el = querySelector(document, '.parent').andThen(find('.child'));
       assert(el.isSome());
       assert.equal(el.unwrap().textContent, 'four');
     });
   });
 
-  describe('parent', function() {
-    it('returns none for failed subclass filter', function() {
+  describe('parent', function () {
+    it('returns none for failed subclass filter', function () {
       const el = querySelector(document, '.child').andThen(
         parent('.parent', HTMLButtonElement)
       );
       assert(el.isNone());
     });
 
-    it('returns some for matching subclass filter', function() {
+    it('returns some for matching subclass filter', function () {
       const el = querySelector(document, '.child').andThen(
         parent('.parent', HTMLDivElement)
       );
@@ -181,15 +181,15 @@ describe('typed selector queries', function() {
       assert(el.unwrap().classList.contains('parent'));
     });
 
-    it('returns some for default subclass filter', function() {
+    it('returns some for default subclass filter', function () {
       const el = querySelector(document, '.child').andThen(parent('.parent'));
       assert(el.isSome());
       assert(el.unwrap().classList.contains('parent'));
     });
   });
 
-  describe('addClass', function() {
-    it('adds class names', function() {
+  describe('addClass', function () {
+    it('adds class names', function () {
       const el = querySelector(document, '.text').andThen(addClass('a', 'b'));
       assert(el.isSome());
       assert(el.unwrap().classList.contains('a'));
@@ -197,8 +197,8 @@ describe('typed selector queries', function() {
     });
   });
 
-  describe('removeClass', function() {
-    it('removes class names', function() {
+  describe('removeClass', function () {
+    it('removes class names', function () {
       const el = querySelector(document, '.text')
         .andThen(addClass('a', 'b', 'c'))
         .andThen(removeClass('a', 'b'));
@@ -209,8 +209,8 @@ describe('typed selector queries', function() {
     });
   });
 
-  describe('toggleClass', function() {
-    it('toggles class name', function() {
+  describe('toggleClass', function () {
+    it('toggles class name', function () {
       const el = querySelector(document, '.text').andThen(toggleClass('a'));
       assert(el.isSome());
       assert(el.unwrap().classList.contains('a'));
@@ -219,7 +219,7 @@ describe('typed selector queries', function() {
       assert(!el.unwrap().classList.contains('a'));
     });
 
-    it('toggles class name on', function() {
+    it('toggles class name on', function () {
       const el = querySelector(document, '.text')
         .andThen(toggleClass('a', true))
         .andThen(toggleClass('a', true));
@@ -227,7 +227,7 @@ describe('typed selector queries', function() {
       assert(el.unwrap().classList.contains('a'));
     });
 
-    it('toggles class name off', function() {
+    it('toggles class name off', function () {
       const el = querySelector(document, '.text')
         .andThen(addClass('a'))
         .andThen(toggleClass('a', false))
@@ -237,14 +237,14 @@ describe('typed selector queries', function() {
     });
   });
 
-  describe('prev', function() {
-    it('returns some for default type match', function() {
+  describe('prev', function () {
+    it('returns some for default type match', function () {
       const el = querySelector(document, 'span.text').andThen(prev('.text'));
       assert(el.isSome());
       assert.equal(el.unwrap().tagName, 'P');
     });
 
-    it('returns some for type match', function() {
+    it('returns some for type match', function () {
       const el = querySelector(document, 'span.text').andThen(
         prev('.text', HTMLParagraphElement)
       );
@@ -252,12 +252,12 @@ describe('typed selector queries', function() {
       assert.equal(el.unwrap().tagName, 'P');
     });
 
-    it('returns none for no selector matches', function() {
+    it('returns none for no selector matches', function () {
       const el = querySelector(document, 'span.text').andThen(prev('.missing'));
       assert(el.isNone());
     });
 
-    it('returns none for selector match but type mismatch', function() {
+    it('returns none for selector match but type mismatch', function () {
       const el = querySelector(document, 'span.text').andThen(
         prev('.text', HTMLFormElement)
       );
@@ -265,14 +265,14 @@ describe('typed selector queries', function() {
     });
   });
 
-  describe('next', function() {
-    it('returns some for default type match', function() {
+  describe('next', function () {
+    it('returns some for default type match', function () {
       const el = querySelector(document, '.text').andThen(next('.text'));
       assert(el.isSome());
       assert.equal(el.unwrap().tagName, 'P');
     });
 
-    it('returns some for type match', function() {
+    it('returns some for type match', function () {
       const el = querySelector(document, '.text').andThen(
         next('.text', HTMLSpanElement)
       );
@@ -280,12 +280,12 @@ describe('typed selector queries', function() {
       assert.equal(el.unwrap().tagName, 'SPAN');
     });
 
-    it('returns none for no selector matches', function() {
+    it('returns none for no selector matches', function () {
       const el = querySelector(document, '.text').andThen(next('.missing'));
       assert(el.isNone());
     });
 
-    it('returns none for selector match but type mismatch', function() {
+    it('returns none for selector match but type mismatch', function () {
       const el = querySelector(document, '.text').andThen(
         next('.text', HTMLFormElement)
       );
@@ -293,15 +293,15 @@ describe('typed selector queries', function() {
     });
   });
 
-  describe('getAttribute', function() {
-    it('returns none for missing attribute', function() {
+  describe('getAttribute', function () {
+    it('returns none for missing attribute', function () {
       const value = querySelector(document, '.text').andThen(
         getAttribute('missing')
       );
       assert(value.isNone());
     });
 
-    it('returns some for attribute', function() {
+    it('returns some for attribute', function () {
       const value = querySelector(document, '.text').andThen(
         getAttribute('class')
       );
@@ -310,8 +310,8 @@ describe('typed selector queries', function() {
     });
   });
 
-  describe('setAttribute', function() {
-    it('sets an attribute value', function() {
+  describe('setAttribute', function () {
+    it('sets an attribute value', function () {
       const value = querySelector(document, '.text')
         .andThen(setAttribute('alt', 'hello'))
         .andThen(getAttribute('alt'));
@@ -320,8 +320,8 @@ describe('typed selector queries', function() {
     });
   });
 
-  describe('getValue', function() {
-    it('returns none for empty value', function() {
+  describe('getValue', function () {
+    it('returns none for empty value', function () {
       const value = querySelector(
         document,
         'input[name=empty]',
@@ -330,7 +330,7 @@ describe('typed selector queries', function() {
       assert(value.isNone());
     });
 
-    it('returns some for value', function() {
+    it('returns some for value', function () {
       const value = querySelector(
         document,
         'input[name=url]',
@@ -341,8 +341,8 @@ describe('typed selector queries', function() {
     });
   });
 
-  describe('setValue', function() {
-    it('sets an input value', function() {
+  describe('setValue', function () {
+    it('sets an input value', function () {
       const value = querySelector(document, 'input[name=url]', HTMLInputElement)
         .andThen(setValue('updated'))
         .andThen(getValue);
@@ -351,16 +351,16 @@ describe('typed selector queries', function() {
     });
   });
 
-  describe('setText', function() {
-    it('sets text content', function() {
+  describe('setText', function () {
+    it('sets text content', function () {
       const el = querySelector(document, '.text').andThen(setText('updated'));
       assert(el.isSome());
       assert.equal(el.unwrap().textContent, 'updated');
     });
   });
 
-  describe('append', function() {
-    it('appends after last child', function() {
+  describe('append', function () {
+    it('appends after last child', function () {
       const el = querySelector(document, '.text').andThen(
         append('hello', 'world')
       );
@@ -369,8 +369,8 @@ describe('typed selector queries', function() {
     });
   });
 
-  describe('prepend', function() {
-    it('prepends before first child', function() {
+  describe('prepend', function () {
+    it('prepends before first child', function () {
       const el = querySelector(document, '.text').andThen(
         prepend('hello', 'world')
       );
@@ -379,8 +379,8 @@ describe('typed selector queries', function() {
     });
   });
 
-  describe('after', function() {
-    it('appends after the element', function() {
+  describe('after', function () {
+    it('appends after the element', function () {
       const value = querySelector(document, '.text')
         .andThen(after('hello', 'world'))
         .map(el => el.nextSibling)
@@ -390,8 +390,8 @@ describe('typed selector queries', function() {
     });
   });
 
-  describe('before', function() {
-    it('prepends before the element', function() {
+  describe('before', function () {
+    it('prepends before the element', function () {
       const value = querySelector(document, '.text')
         .andThen(before('hello', 'world'))
         .map(el => el.previousSibling)
@@ -401,8 +401,8 @@ describe('typed selector queries', function() {
     });
   });
 
-  describe('replaceWith', function() {
-    it('replaces the element with nodes', function() {
+  describe('replaceWith', function () {
+    it('replaces the element with nodes', function () {
       const el = querySelector(document, '.child').andThen(
         replaceWith('hello', 'world')
       );
@@ -414,29 +414,29 @@ describe('typed selector queries', function() {
     });
   });
 
-  describe('remove', function() {
-    it('removes the element from the tree', function() {
+  describe('remove', function () {
+    it('removes the element from the tree', function () {
       const el = querySelector(document, '.parent').andThen(remove);
       assert(el.isSome());
       assert(querySelector(document, '.parent').isNone());
     });
   });
 
-  describe('namedItem', function() {
-    it('returns some for matching input name', function() {
+  describe('namedItem', function () {
+    it('returns some for matching input name', function () {
       const form = querySelector(document, 'form', HTMLFormElement);
       const el = form.andThen(namedItem('url'));
       assert(el.isSome());
       assert.equal(el.unwrap().value, '/hello');
     });
 
-    it('returns none for missing input name', function() {
+    it('returns none for missing input name', function () {
       const form = querySelector(document, 'form', HTMLFormElement);
       const el = form.andThen(namedItem('missing'));
       assert(el.isNone());
     });
 
-    it('returns none for type mismatch', function() {
+    it('returns none for type mismatch', function () {
       const form = querySelector(document, 'form', HTMLFormElement);
       const el = form.andThen(namedItem('url', HTMLSelectElement));
       assert(el.isNone());
